@@ -14,6 +14,7 @@ const Popup = () => {
     },
     currentUrl: "",
     password: "",
+    mode: "dark",
   });
 
   const handleInputChange = (inputName) => (event) => {
@@ -35,16 +36,28 @@ const Popup = () => {
     let currentUrl;
 
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-      currentUrl = tabs[0].url;
+      if (tabs[0]) {
+        currentUrl = tabs[0].url;
 
-      const password = Base64.stringify(
-        hmacSHA256(
-          currentUrl + state.formInputs.email,
-          state.formInputs.passphrase
-        )
-      ).substring(0, 12);
+        // Hack to only get the host property of the URL
+        const urlHack = document.createElement("a");
+        urlHack.href = currentUrl;
 
-      setState({ ...state, currentUrl, password });
+        const host = urlHack.host;
+
+        // Generate password
+        let password = Base64.stringify(
+          hmacSHA256(host + state.formInputs.email, state.formInputs.passphrase)
+        ).substring(0, 12);
+
+        // Check for special characters
+        const format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+        if (!format.test(password)) {
+          password += "@";
+        }
+
+        setState({ ...state, currentUrl, password });
+      }
     });
   };
 
@@ -64,7 +77,7 @@ const Popup = () => {
           </div>
         </div>
         <div className="form__group">
-          <label htmlFor="password">Secret Passphrase :</label>
+          <label htmlFor="password">Secret :</label>
           <div className="form__input-container">
             <input
               required
@@ -80,7 +93,9 @@ const Popup = () => {
         </button>
       </form>
 
-      {state.password && <div className="popup__password">{state.password}</div>}
+      {state.password && (
+        <div className="popup__password">{state.password}</div>
+      )}
     </div>
   );
 };
