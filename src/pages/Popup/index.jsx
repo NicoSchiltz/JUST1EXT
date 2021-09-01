@@ -17,7 +17,7 @@ const Popup = () => {
     currentUrl: "",
     password: "",
     dark: false,
-    knownEmailsOnCurrentUrl: 0,
+    knownEmailsOnCurrentUrl: [],
   });
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const Popup = () => {
           let knownEmailsOnCurrentUrl = state.knownEmailsOnCurrentUrl;
 
           if (result.websites && result.websites[currentUrl]) {
-            knownEmailsOnCurrentUrl = result.websites[currentUrl].length;
+            knownEmailsOnCurrentUrl = result.websites[currentUrl];
           }
 
           setState({
@@ -105,13 +105,50 @@ const Popup = () => {
 
       if (oldWebsites && oldWebsites[currentUrl]) {
         const oldEmails = oldWebsites[currentUrl];
-        newWebsites[currentUrl] = [...oldEmails, email];
+
+        if (
+          !oldWebsites[currentUrl].find(
+            (websiteEmail) => websiteEmail === email
+          )
+        ) {
+          newWebsites[currentUrl] = [...oldEmails, email];
+        }
       } else {
         newWebsites[currentUrl] = [email];
       }
 
       chrome.storage.sync.set({ websites: newWebsites }, function () {
-        console.log(state);
+        chrome.storage.sync.set({ websites: newWebsites }, function () {
+          setState({
+            ...state,
+            knownEmailsOnCurrentUrl: newWebsites[currentUrl],
+          });
+        });
+      });
+    });
+  };
+
+  const handleSelectEmail = (email) => {
+    setState({ ...state, formInputs: { ...state.formInputs, email } });
+  };
+
+  const handleRemoveEmail = (email) => {
+    chrome.storage.sync.get(["websites"], function (result) {
+      const currentUrl = state.currentUrl;
+      const oldWebsites = result.websites;
+      const newWebsites = { ...oldWebsites };
+
+      const newEmails = oldWebsites[currentUrl].filter(
+        (websiteEmail) => websiteEmail !== email
+      );
+
+      newWebsites[currentUrl] = newEmails;
+
+      chrome.storage.sync.set({ websites: newWebsites }, function () {
+        setState({
+          ...state,
+          knownEmailsOnCurrentUrl: newEmails,
+        });
       });
     });
   };
@@ -119,13 +156,14 @@ const Popup = () => {
   return (
     <div className={`popup ${state.dark ? "dark" : "light"}`}>
       <div className="popup__header">
-        <div>{state.currentUrl}</div>
-        <div>
-          {state.knownEmailsOnCurrentUrl > 0 &&
-            `${state.knownEmailsOnCurrentUrl} email(s) saved !`}
-        </div>
+        <div className="popup__top">{state.currentUrl}</div>
         <div className="popup__avatar">
-          <Avatar />
+          <Avatar
+            message={`${state.knownEmailsOnCurrentUrl.length} email(s) saved !`}
+            emails={state.knownEmailsOnCurrentUrl}
+            handleSelectEmail={handleSelectEmail}
+            handleRemoveEmail={handleRemoveEmail}
+          />
         </div>
         <div className="popup__switch-mode">
           <label>
@@ -152,6 +190,7 @@ const Popup = () => {
                 id="email "
                 type="email"
                 onChange={handleInputChange("email")}
+                value={state.formInputs.email}
               />
             </div>
           </div>
@@ -164,6 +203,7 @@ const Popup = () => {
                 id="password"
                 type="password"
                 onChange={handleInputChange("passphrase")}
+                value={state.formInputs.passphrase}
               />
             </div>
           </div>

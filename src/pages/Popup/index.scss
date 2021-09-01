@@ -11,6 +11,10 @@ body {
   margin: 0;
 }
 
+p {
+  margin: 0;
+}
+
 button {
   cursor: pointer;
   border: none;
@@ -22,6 +26,12 @@ input {
   height: 2rem;
   border-radius: 0.25rem;
   padding: 0.5rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .btn {
@@ -82,7 +92,7 @@ input {
   &__switch-mode {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 0.65rem;
     text-align: right;
     padding-left: 0.5rem;
 
@@ -120,8 +130,9 @@ input {
     button {
       margin: 0 0.5rem;
       font-size: 0.875rem;
-      height: 2rem;
-      width: 2rem;
+      height: 2.5rem;
+      width: 2.5rem;
+      padding: 0;
       display: flex;
       align-items: center;
       justify-content: center;
