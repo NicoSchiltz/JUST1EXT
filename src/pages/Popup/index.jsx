@@ -17,14 +17,10 @@ const Popup = () => {
     currentUrl: "",
     password: "",
     dark: false,
+    knownEmailsOnCurrentUrl: 0,
   });
 
   useEffect(() => {
-    // Get user data (dark mode)
-    chrome.storage.sync.get(["dark"], function (result) {
-      setState({ ...state, dark: result.dark });
-    });
-
     // Get current url
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       if (tabs[0]) {
@@ -35,7 +31,21 @@ const Popup = () => {
         urlHack.href = currentUrl;
         currentUrl = urlHack.host;
 
-        setState({ ...state, currentUrl });
+        // Get user data and update state
+        chrome.storage.sync.get(["websites", "dark"], function (result) {
+          let knownEmailsOnCurrentUrl = state.knownEmailsOnCurrentUrl;
+
+          if (result.websites && result.websites[currentUrl]) {
+            knownEmailsOnCurrentUrl = result.websites[currentUrl].length;
+          }
+
+          setState({
+            ...state,
+            currentUrl,
+            dark: result.dark || false,
+            knownEmailsOnCurrentUrl,
+          });
+        });
       }
     });
   }, []);
@@ -43,9 +53,6 @@ const Popup = () => {
   const handleSwitch = () => {
     chrome.storage.sync.set({ dark: !state.dark }, function () {
       setState({ ...state, dark: !state.dark });
-      chrome.storage.sync.get(["dark"], function (result) {
-        console.log(result);
-      });
     });
   };
 
@@ -62,12 +69,6 @@ const Popup = () => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     generatePassword();
-  };
-
-  const handleCopyToClipboard = () => {
-    const password = document.querySelector(".popup__password");
-    password.select();
-    document.execCommand("copy");
   };
 
   const generatePassword = () => {
@@ -88,10 +89,41 @@ const Popup = () => {
     setState({ ...state, password });
   };
 
+  const handleCopyToClipboard = () => {
+    const password = document.querySelector(".popup__password");
+    password.select();
+    document.execCommand("copy");
+  };
+
+  const handleSaveData = () => {
+    const currentUrl = state.currentUrl;
+    const email = state.formInputs.email;
+
+    chrome.storage.sync.get(["websites"], function (result) {
+      const oldWebsites = result.websites;
+      const newWebsites = { ...oldWebsites };
+
+      if (oldWebsites && oldWebsites[currentUrl]) {
+        const oldEmails = oldWebsites[currentUrl];
+        newWebsites[currentUrl] = [...oldEmails, email];
+      } else {
+        newWebsites[currentUrl] = [email];
+      }
+
+      chrome.storage.sync.set({ websites: newWebsites }, function () {
+        console.log(state);
+      });
+    });
+  };
+
   return (
     <div className={`popup ${state.dark ? "dark" : "light"}`}>
       <div className="popup__header">
-        {state.currentUrl}
+        <div>{state.currentUrl}</div>
+        <div>
+          {state.knownEmailsOnCurrentUrl > 0 &&
+            `${state.knownEmailsOnCurrentUrl} email(s) saved !`}
+        </div>
         <div className="popup__avatar">
           <Avatar />
         </div>
@@ -155,9 +187,9 @@ const Popup = () => {
               >
                 <i className="fas fa-clipboard"></i>
               </button>
-{/*               <button className="btn btn-primary">
+              <button className="btn btn-primary" onClick={handleSaveData}>
                 <i className="fas fa-save"></i>
-              </button> */}
+              </button>
             </div>
           </div>
         )}
