@@ -65,7 +65,10 @@ const Popup = () => {
   const generatePassword = () => {
     // Generate password
     let password = Base64.stringify(
-      hmacSHA256(state.currentUrl + state.formInputs.email, state.formInputs.passphrase)
+      hmacSHA256(
+        state.currentUrl + state.formInputs.email,
+        state.formInputs.passphrase
+      )
     ).substring(0, 12);
 
     // Check for special characters
@@ -152,10 +155,12 @@ const Popup = () => {
             <path
               d="m209.066681 238.066681c4.712829 0 8.533325 3.820496 8.533325 8.533325 0 4.71283-3.820496 8.533325-8.533325 8.533325-4.71283 0-8.533356-3.820495-8.533356-8.533325 0-4.712829 3.820526-8.533325 8.533356-8.533325z"
               fill="#3b434f"
+              className="eye"
             />
             <path
               d="m303.786652 238.066681c4.712829 0 8.533325 3.820496 8.533325 8.533325 0 4.71283-3.820496 8.533325-8.533325 8.533325-4.712799 0-8.533326-3.820495-8.533326-8.533325 0-4.712829 3.820527-8.533325 8.533326-8.533325z"
               fill="#3b434f"
+              className="eye"
             />
             <path
               d="m307.626678 269.640015c5.891022 0 10.666657 4.775634 10.666657 10.666656s-4.775635 10.666657-10.666657 10.666657c-5.891052 0-10.666656-4.775635-10.666656-10.666657s4.775604-10.666656 10.666656-10.666656z"
