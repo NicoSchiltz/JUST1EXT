@@ -13,12 +13,13 @@ body {
 
 button {
   cursor: pointer;
+  border: none;
 }
 
 .btn {
   &-primary {
-    background-color: #fff;
-    color: #011122;
+    background-color: #011122;
+    color: #fff;
     text-transform: uppercase;
     letter-spacing: 2px;
     font-size: 0.625rem;
@@ -28,7 +29,7 @@ button {
     transition: all 0.2s ease;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.95);
+      background-color: #011122e1;
     }
   }
 }
@@ -36,35 +37,36 @@ button {
 .popup {
   min-width: 300px;
   padding: 2rem;
-  padding-bottom: .5rem;
+  padding-top: 1rem;
   margin: 0;
 
   &.dark {
     background-color: #011122;
     color: #fff;
+
+    form {
+      label {
+        color: #011122;
+      }
+    }
   }
 
   &.light {
-    .btn-primary {
-      background-color: #011122;
-      color: #fff;
-      transition: all 0.2s ease;
-
-      &:hover {
-        background-color: #011122e1;
-      }
-    }
-
-    .popup__password {
-      border-color: #011122;
-    }
+    background-color: #ecf3fe;
   }
 
   &__header {
-    margin-bottom: 1.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    text-align: center;
+    position: relative;
+  }
+
+  &__avatar {
+    position: relative;
+    bottom: -6px;
+
+    svg {
+      background-size: 4rem;
+    }
   }
 
   &__title {
@@ -73,9 +75,15 @@ button {
   }
 
   &__switch-mode {
-    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
     text-align: right;
-    padding-left: .5rem;
+    padding-left: 0.5rem;
+
+    label {
+      cursor: pointer;
+    }
 
     input {
       opacity: 0;
@@ -85,9 +93,13 @@ button {
     }
   }
 
+  &__main {
+    position: relative;
+    z-index: 2;
+  }
+
   &__password {
-    border-top: 2px solid white;
-    padding: 1.5rem 0 1.25rem;
+    padding-top: 1.5rem;
     font-size: 1rem;
     letter-spacing: 2px;
     text-align: center;
@@ -95,6 +107,10 @@ button {
 }
 
 .form {
+  background-color: #fff;
+  border-radius: 0.25rem;
+  padding: 1rem;
+
   &__group {
     margin-bottom: 1rem;
   }
@@ -113,9 +129,6 @@ button {
 
   &__button {
     width: 100%;
-    margin-top: .75rem;
-    margin-bottom: 1.75rem;
-    border: none;
-    background: white;
+    margin-top: 0.75rem;
   }
 }
