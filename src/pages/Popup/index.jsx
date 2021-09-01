@@ -64,6 +64,12 @@ const Popup = () => {
     generatePassword();
   };
 
+  const handleCopyToClipboard = () => {
+    const password = document.querySelector(".popup__password");
+    password.select();
+    document.execCommand("copy");
+  };
+
   const generatePassword = () => {
     // Generate password
     let password = Base64.stringify(
@@ -102,6 +108,7 @@ const Popup = () => {
           </label>
         </div>
       </div>
+
       <div className="popup__main">
         <form className="form" onSubmit={handleFormSubmit}>
           <div className="form__group">
@@ -128,13 +135,31 @@ const Popup = () => {
               />
             </div>
           </div>
-          <button className="form__button btn btn-primary" data-hover="test">
+          <button className="form__button btn btn-primary">
             Generate Password
           </button>
         </form>
 
         {state.password && (
-          <div className="popup__password">{state.password}</div>
+          <div className="popup__bottom">
+            <input
+              type="text"
+              className="popup__password"
+              value={state.password}
+              readOnly
+            />
+            <div className="popup__buttons">
+              <button
+                className="btn btn-primary"
+                onClick={handleCopyToClipboard}
+              >
+                <i className="fas fa-clipboard"></i>
+              </button>
+{/*               <button className="btn btn-primary">
+                <i className="fas fa-save"></i>
+              </button> */}
+            </div>
+          </div>
         )}
       </div>
     </div>
