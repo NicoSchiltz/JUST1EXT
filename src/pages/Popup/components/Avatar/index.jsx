@@ -35,13 +35,12 @@ const Avatar = ({
             {emails.map((email) => (
               <li key={email}>
                 <button
-                  className="btn"
                   onClick={() => handleSelectEmail(email)}
                 >
                   {email}
                 </button>
                 <button
-                  className="btn btn-danger"
+                  className="btn-danger"
                   onClick={() => handleRemoveEmail(email)}
                 >
                   <i className="fas fa-minus-circle"></i>

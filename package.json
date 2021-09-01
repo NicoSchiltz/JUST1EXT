@@ -1,7 +1,7 @@
 {
   "name": "just1",
   "version": "1.0.0",
-  "description": "Password Generator / Manager",
+  "description": "Ne retenez qu'un seul mot de passe, je m'occupe de tout le reste !",
   "license": "MIT",
   "repository": {
     "type": "git",

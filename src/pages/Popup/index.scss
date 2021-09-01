@@ -15,6 +15,10 @@ p {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 button {
   cursor: pointer;
   border: none;
@@ -35,20 +39,29 @@ ul {
 }
 
 .btn {
+  transition: all 0.2s ease;
+  padding: 0.875rem;
+  border: 2px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  border-radius: 4rem;
+  color: #fff;
+
   &-primary {
     background-color: #011122;
-    color: #fff;
-    border: 2px solid #fff;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.625rem;
-    font-weight: 600;
-    border-radius: 4rem;
-    padding: 0.875rem;
-    transition: all 0.2s ease;
 
     &:hover {
       background-color: #011122e1;
+    }
+  }
+
+  &-success {
+    background-color: #3eba45;
+
+    &:hover {
+      background-color: #36a73c;
     }
   }
 }
@@ -57,11 +70,16 @@ ul {
   min-width: 300px;
   padding: 2rem;
   padding-top: 1rem;
+  padding-bottom: 0;
   margin: 0;
 
   &.dark {
     background-color: #011122;
     color: #fff;
+
+    .btn-primary {
+      border-color: #fff;
+    }
 
     .avatar {
       color: #011122;
@@ -72,6 +90,12 @@ ul {
         color: #011122;
       }
     }
+
+    .popup__footer {
+      a {
+        color: #fff;
+      }
+    }
   }
 
   &.light {
@@ -80,7 +104,7 @@ ul {
 
   &__top {
     margin-bottom: 0.5rem;
-    padding-right: 2rem;
+    padding: 0 2rem;
     width: 100%;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -127,7 +151,7 @@ ul {
   }
 
   &__password {
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     font-size: 1rem;
     letter-spacing: 2px;
     text-align: center;
@@ -138,17 +162,27 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 1rem;
+    margin-top: 0.875rem;
 
     button {
-      margin: 0 0.5rem;
-      font-size: 0.875rem;
-      height: 2.5rem;
-      width: 2.5rem;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 0.675rem;
+      margin-right: 0.5rem;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &__footer {
+    text-align: center;
+    font-size: 0.725rem;
+    font-weight: 400;
+    margin-top: 0.75rem;
+    padding-bottom: 0.25rem;
+
+    a {
+      color: #0111224d;
     }
   }
 }
@@ -172,6 +206,7 @@ ul {
 
   &__button {
     width: 100%;
-    margin-top: 0.75rem;
+    margin-top: 0.5rem;
+    padding: 0.875rem;
   }
 }

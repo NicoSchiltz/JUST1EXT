@@ -1,7 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Just1",
-  "background": { "service_worker": "background.bundle.js" },
+  "name": "Justin Maudepasse",
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon.png"
@@ -9,13 +8,6 @@
   "icons": {
     "128": "icon-128.png"
   },
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*", "<all_urls>"],
-      "js": ["contentScript.bundle.js"],
-      "css": ["content.styles.css"]
-    }
-  ],
   "web_accessible_resources": [
     {
       "resources": ["content.styles.css", "icon.png", "icon-128.png"],

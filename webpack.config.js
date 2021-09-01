@@ -1,51 +1,49 @@
-var webpack = require('webpack'),
-  path = require('path'),
-  fileSystem = require('fs-extra'),
-  env = require('./utils/env'),
-  { CleanWebpackPlugin } = require('clean-webpack-plugin'),
-  CopyWebpackPlugin = require('copy-webpack-plugin'),
-  HtmlWebpackPlugin = require('html-webpack-plugin'),
-  TerserPlugin = require('terser-webpack-plugin');
+var webpack = require("webpack"),
+  path = require("path"),
+  fileSystem = require("fs-extra"),
+  env = require("./utils/env"),
+  { CleanWebpackPlugin } = require("clean-webpack-plugin"),
+  CopyWebpackPlugin = require("copy-webpack-plugin"),
+  HtmlWebpackPlugin = require("html-webpack-plugin"),
+  TerserPlugin = require("terser-webpack-plugin");
 
-const ASSET_PATH = process.env.ASSET_PATH || '/';
+const ASSET_PATH = process.env.ASSET_PATH || "/";
 
 var alias = {
-  'react-dom': '@hot-loader/react-dom',
+  "react-dom": "@hot-loader/react-dom",
 };
 
 // load the secrets
-var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js');
+var secretsPath = path.join(__dirname, "secrets." + env.NODE_ENV + ".js");
 
 var fileExtensions = [
-  'jpg',
-  'jpeg',
-  'png',
-  'gif',
-  'eot',
-  'otf',
-  'svg',
-  'ttf',
-  'woff',
-  'woff2',
+  "jpg",
+  "jpeg",
+  "png",
+  "gif",
+  "eot",
+  "otf",
+  "svg",
+  "ttf",
+  "woff",
+  "woff2",
 ];
 
 if (fileSystem.existsSync(secretsPath)) {
-  alias['secrets'] = secretsPath;
+  alias["secrets"] = secretsPath;
 }
 
 var options = {
-  mode: process.env.NODE_ENV || 'development',
+  mode: process.env.NODE_ENV || "development",
   entry: {
-    popup: path.join(__dirname, 'src', 'pages', 'Popup', 'index.jsx'),
-    background: path.join(__dirname, 'src', 'pages', 'Background', 'index.js'),
-    contentScript: path.join(__dirname, 'src', 'pages', 'Content', 'index.js')
+    popup: path.join(__dirname, "src", "pages", "Popup", "index.jsx"),
   },
   chromeExtensionBoilerplate: {
-    notHotReload: ['contentScript'],
+    notHotReload: ["contentScript"],
   },
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, "build"),
+    filename: "[name].bundle.js",
     publicPath: ASSET_PATH,
   },
   module: {
@@ -56,13 +54,13 @@ var options = {
         // in the `src` directory
         use: [
           {
-            loader: 'style-loader',
+            loader: "style-loader",
           },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
           },
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
             options: {
               sourceMap: true,
             },
@@ -70,26 +68,26 @@ var options = {
         ],
       },
       {
-        test: new RegExp('.(' + fileExtensions.join('|') + ')$'),
-        loader: 'file-loader',
+        test: new RegExp(".(" + fileExtensions.join("|") + ")$"),
+        loader: "file-loader",
         options: {
-          name: '[name].[ext]',
+          name: "[name].[ext]",
         },
         exclude: /node_modules/,
       },
       {
         test: /\.html$/,
-        loader: 'html-loader',
+        loader: "html-loader",
         exclude: /node_modules/,
       },
       {
         test: /\.(js|jsx)$/,
         use: [
           {
-            loader: 'source-map-loader',
+            loader: "source-map-loader",
           },
           {
-            loader: 'babel-loader',
+            loader: "babel-loader",
           },
         ],
         exclude: /node_modules/,
@@ -99,8 +97,8 @@ var options = {
   resolve: {
     alias: alias,
     extensions: fileExtensions
-      .map((extension) => '.' + extension)
-      .concat(['.js', '.jsx', '.ts', '.tsx', '.css']),
+      .map((extension) => "." + extension)
+      .concat([".js", ".jsx", ".ts", ".tsx", ".css"]),
   },
   plugins: [
     new webpack.ProgressPlugin(),
@@ -110,12 +108,12 @@ var options = {
       cleanStaleWebpackAssets: true,
     }),
     // expose and write the allowed env vars on the compiled bundle
-    new webpack.EnvironmentPlugin(['NODE_ENV']),
+    new webpack.EnvironmentPlugin(["NODE_ENV"]),
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/manifest.json',
-          to: path.join(__dirname, 'build'),
+          from: "src/manifest.json",
+          to: path.join(__dirname, "build"),
           force: true,
           transform: function (content, path) {
             // generates the manifest file using the package.json informations
@@ -133,35 +131,26 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/pages/Content/content.styles.css',
-          to: path.join(__dirname, 'build'),
-          force: true,
-        },
-      ],
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: 'src/assets/img/',
-          to: path.join(__dirname, 'build'),
+          from: "src/assets/img/",
+          to: path.join(__dirname, "build"),
           force: true,
         },
       ],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'pages', 'Popup', 'index.html'),
-      filename: 'popup.html',
-      chunks: ['popup'],
+      template: path.join(__dirname, "src", "pages", "Popup", "index.html"),
+      filename: "popup.html",
+      chunks: ["popup"],
       cache: false,
-    })
+    }),
   ],
   infrastructureLogging: {
-    level: 'info',
+    level: "info",
   },
 };
 
-if (env.NODE_ENV === 'development') {
-  options.devtool = 'cheap-module-source-map';
+if (env.NODE_ENV === "development") {
+  options.devtool = "cheap-module-source-map";
 } else {
   options.optimization = {
     minimize: true,

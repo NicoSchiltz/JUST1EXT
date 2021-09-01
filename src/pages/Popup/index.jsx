@@ -165,7 +165,7 @@ const Popup = () => {
 
   return (
     <div className={`popup ${state.dark ? "dark" : "light"}`}>
-      <div className="popup__header">
+      <header className="popup__header">
         <div className="popup__top">{state.currentUrl}</div>
         <div className="popup__avatar">
           <Avatar
@@ -187,9 +187,9 @@ const Popup = () => {
             )}
           </label>
         </div>
-      </div>
+      </header>
 
-      <div className="popup__main">
+      <main className="popup__main">
         <form className="form" onSubmit={handleFormSubmit}>
           <div className="form__group">
             <label htmlFor="email">Email</label>
@@ -233,15 +233,21 @@ const Popup = () => {
                 className="btn btn-primary"
                 onClick={handleCopyToClipboard}
               >
-                <i className="fas fa-clipboard"></i>
+                <i className="fas fa-clipboard"></i> Copier
               </button>
-              <button className="btn btn-primary" onClick={handleSaveData}>
-                <i className="fas fa-save"></i>
+              <button className="btn btn-success" onClick={handleSaveData}>
+                <i className="fas fa-save"></i> Enregistrer
               </button>
             </div>
           </div>
         )}
-      </div>
+      </main>
+
+      <footer className="popup__footer">
+        <a href="https://www.nicolas-schiltz.fr" target="_blank">
+          © Nicolas Schiltz
+        </a>
+      </footer>
     </div>
   );
 };
