@@ -36,9 +36,9 @@ if (fileSystem.existsSync(secretsPath)) {
 var options = {
   mode: process.env.NODE_ENV || 'development',
   entry: {
-    popup: path.join(__dirname, 'src', 'components', 'Popup', 'index.jsx'),
-    background: path.join(__dirname, 'src', 'components', 'Background', 'index.js'),
-    contentScript: path.join(__dirname, 'src', 'components', 'Content', 'index.js')
+    popup: path.join(__dirname, 'src', 'pages', 'Popup', 'index.jsx'),
+    background: path.join(__dirname, 'src', 'pages', 'Background', 'index.js'),
+    contentScript: path.join(__dirname, 'src', 'pages', 'Content', 'index.js')
   },
   chromeExtensionBoilerplate: {
     notHotReload: ['contentScript'],
@@ -133,7 +133,7 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/components/Content/content.styles.css',
+          from: 'src/pages/Content/content.styles.css',
           to: path.join(__dirname, 'build'),
           force: true,
         },
@@ -149,7 +149,7 @@ var options = {
       ],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'components', 'Popup', 'index.html'),
+      template: path.join(__dirname, 'src', 'pages', 'Popup', 'index.html'),
       filename: 'popup.html',
       chunks: ['popup'],
       cache: false,

@@ -63,46 +63,6 @@ button {
   &__avatar {
     position: relative;
     bottom: -6px;
-
-    svg {
-      background-size: 4rem;
-
-      .eye {
-        animation: blink 5s infinite;
-        transform-origin: center;
-
-        @keyframes blink {
-          60% {
-            opacity: 1;
-            transform: none;
-            animation-timing-function: ease-in;
-          }
-          61% {
-            transform: translateY(5px) scaleY(0);
-            opacity: 0;
-          }
-          65% {
-            opacity: 1;
-            transform: none;
-            animation-timing-function: ease-in;
-          }
-          90% {
-            opacity: 1;
-            transform: none;
-            animation-timing-function: ease-in;
-          }
-          91% {
-            transform: translateY(5px) scaleY(0);
-            opacity: 0;
-          }
-          95% {
-            opacity: 1;
-            transform: none;
-            animation-timing-function: ease-in;
-          }
-        }
-      }
-    }
   }
 
   &__title {
