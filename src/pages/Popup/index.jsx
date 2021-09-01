@@ -153,13 +153,23 @@ const Popup = () => {
     });
   };
 
+  const generateJustinMessage = () => {
+    if (state.knownEmailsOnCurrentUrl.length === 0) {
+      return "Tu veux générer un nouveau mot de passe pour ce site ?";
+    } else if (state.knownEmailsOnCurrentUrl.length === 1) {
+      return "J'ai 1 email enregistré pour ce site !";
+    } else {
+      return `J'ai ${state.knownEmailsOnCurrentUrl.length} emails enregistrés pour ce site !`;
+    }
+  };
+
   return (
     <div className={`popup ${state.dark ? "dark" : "light"}`}>
       <div className="popup__header">
         <div className="popup__top">{state.currentUrl}</div>
         <div className="popup__avatar">
           <Avatar
-            message={`${state.knownEmailsOnCurrentUrl.length} email(s) saved !`}
+            message={generateJustinMessage()}
             emails={state.knownEmailsOnCurrentUrl}
             handleSelectEmail={handleSelectEmail}
             handleRemoveEmail={handleRemoveEmail}
@@ -207,9 +217,7 @@ const Popup = () => {
               />
             </div>
           </div>
-          <button className="form__button btn btn-primary">
-            Generate Password
-          </button>
+          <button className="form__button btn btn-primary">Let's Go !</button>
         </form>
 
         {state.password && (

@@ -63,6 +63,10 @@ ul {
     background-color: #011122;
     color: #fff;
 
+    .avatar {
+      color: #011122;
+    }
+
     form {
       label {
         color: #011122;
@@ -72,6 +76,15 @@ ul {
 
   &.light {
     background-color: #ecf3fe;
+  }
+
+  &__top {
+    margin-bottom: 0.5rem;
+    padding-right: 2rem;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   &__header {

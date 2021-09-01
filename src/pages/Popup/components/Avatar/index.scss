@@ -25,6 +25,7 @@
     &-header {
       width: 100%;
       position: relative;
+      padding: 0 1.25rem;
     }
 
     &-emails-list {
@@ -62,7 +63,7 @@
   }
 
   &__eye {
-    animation: blink 5s infinite;
+    animation: blink 4s infinite;
     transform-origin: center;
 
     @keyframes blink {

@@ -2,7 +2,12 @@ import React, { useState } from "react";
 
 import "./index.scss";
 
-const Avatar = ({ message, emails, handleSelectEmail, handleRemoveEmail }) => {
+const Avatar = ({
+  message,
+  emails,
+  handleSelectEmail,
+  handleRemoveEmail
+}) => {
   const [state, setState] = useState({
     showEmails: false,
   });
