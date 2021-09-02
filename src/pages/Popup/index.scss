@@ -38,16 +38,24 @@ ul {
   margin: 0;
 }
 
+.is-green {
+  color: #3eba45;
+}
+
 .btn {
   transition: all 0.2s ease;
-  padding: 0.875rem;
+  padding: 0.75rem;
   border: 2px solid transparent;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 0.625rem;
   font-weight: 600;
-  border-radius: 4rem;
+  border-radius: 0.25rem;
   color: #fff;
+
+  &-rounded {
+    border-radius: 4rem;
+  }
 
   &-primary {
     background-color: #011122;
@@ -76,10 +84,6 @@ ul {
   &.dark {
     background-color: #011122;
     color: #fff;
-
-    .btn-primary {
-      border-color: #fff;
-    }
 
     .avatar {
       color: #011122;
@@ -152,20 +156,39 @@ ul {
 
   &__password {
     margin-top: 1.25rem;
-    font-size: 1rem;
-    letter-spacing: 2px;
-    text-align: center;
-    border: none;
+    position: relative;
+
+    input {
+      font-size: 0.875rem;
+      letter-spacing: 2px;
+      text-align: center;
+      border: none;
+
+      &.password-copied {
+        &:focus {
+          outline: #3eba45 2px auto
+        }
+      }
+    }
+
+    button {
+      position: absolute;
+      border-left: 1px solid #ecf3fe;
+      height: calc(100% - 2px);
+      right: 0;
+      padding: 0 0.625rem;
+      top: 1px;
+    }
   }
 
-  &__buttons {
+  &__actions {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 0.875rem;
 
     button {
-      padding: 0.675rem;
+      width: 100%;
       margin-right: 0.5rem;
 
       &:last-child {
@@ -179,7 +202,7 @@ ul {
     font-size: 0.725rem;
     font-weight: 400;
     margin-top: 0.75rem;
-    padding-bottom: 0.25rem;
+    padding-bottom: 0.5rem;
 
     a {
       color: #0111224d;
@@ -206,7 +229,6 @@ ul {
 
   &__button {
     width: 100%;
-    margin-top: 0.5rem;
-    padding: 0.875rem;
+    margin-top: 0.25rem;
   }
 }

@@ -16,6 +16,7 @@ const Popup = () => {
     },
     currentUrl: "",
     password: "",
+    passwordCopied: "",
     dark: false,
     knownEmailsOnCurrentUrl: [],
   });
@@ -90,9 +91,17 @@ const Popup = () => {
   };
 
   const handleCopyToClipboard = () => {
-    const password = document.querySelector(".popup__password");
+    const password = document.querySelector(".popup__password input");
     password.select();
     document.execCommand("copy");
+
+    setState({ ...state, passwordCopied: true });
+    setTimeout(function () {
+      setState({ ...state, passwordCopied: false });
+    }, 3000);
+
+    let sel = document.getSelection();
+    sel.removeAllRanges();
   };
 
   const handleSaveData = () => {
@@ -157,7 +166,7 @@ const Popup = () => {
     if (state.knownEmailsOnCurrentUrl.length === 0) {
       return "Tu veux générer un nouveau mot de passe pour ce site ?";
     } else if (state.knownEmailsOnCurrentUrl.length === 1) {
-      return "J'ai 1 email enregistré pour ce site !";
+      return `J'ai 1 email enregistré pour ce site !`;
     } else {
       return `J'ai ${state.knownEmailsOnCurrentUrl.length} emails enregistrés pour ce site !`;
     }
@@ -222,19 +231,22 @@ const Popup = () => {
 
         {state.password && (
           <div className="popup__bottom">
-            <input
-              type="text"
-              className="popup__password"
-              value={state.password}
-              readOnly
-            />
-            <div className="popup__buttons">
-              <button
-                className="btn btn-primary"
-                onClick={handleCopyToClipboard}
-              >
-                <i className="fas fa-clipboard"></i> Copier
+            <div className="popup__password">
+              <input
+                type="text"
+                className={state.passwordCopied ? "password-copied" : ""}
+                value={state.password}
+                readOnly
+              />
+              <button onClick={handleCopyToClipboard}>
+                {state.passwordCopied ? (
+                  <i className="fas fa-check is-green"></i>
+                ) : (
+                  <i className="fas fa-clipboard"></i>
+                )}
               </button>
+            </div>
+            <div className="popup__actions">
               <button className="btn btn-success" onClick={handleSaveData}>
                 <i className="fas fa-save"></i> Enregistrer
               </button>

@@ -2,12 +2,7 @@ import React, { useState } from "react";
 
 import "./index.scss";
 
-const Avatar = ({
-  message,
-  emails,
-  handleSelectEmail,
-  handleRemoveEmail
-}) => {
+const Avatar = ({ message, emails, handleSelectEmail, handleRemoveEmail }) => {
   const [state, setState] = useState({
     showEmails: false,
   });
@@ -20,13 +15,17 @@ const Avatar = ({
     <div className="avatar">
       <div className="avatar__message">
         <div className="avatar__message-header">
-          <p>{message}</p>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: message,
+            }}
+          ></p>
           {emails.length > 0 && (
             <button
-              className="avatar__show-emails-button btn btn-primary"
+              className="avatar__show-emails-button btn btn-primary btn-rounded"
               onClick={handleShowEmails}
             >
-              <i className="fas fa-chevron-down"></i>
+              {state.showEmails && <i className="fas fa-chevron-up"></i> || <i className="fas fa-chevron-down"></i>}
             </button>
           )}
         </div>
@@ -34,9 +33,7 @@ const Avatar = ({
           <ul className="avatar__message-emails-list">
             {emails.map((email) => (
               <li key={email}>
-                <button
-                  onClick={() => handleSelectEmail(email)}
-                >
+                <button onClick={() => handleSelectEmail(email)}>
                   {email}
                 </button>
                 <button

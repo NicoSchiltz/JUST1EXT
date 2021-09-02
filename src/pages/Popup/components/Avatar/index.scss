@@ -36,6 +36,15 @@
         width: 100%;
         position: relative;
 
+        button {
+          text-decoration: underline;
+          transition: all .2s ease;
+
+          &:hover {
+            text-decoration: none;
+          }
+        }
+
         .btn-danger {
           position: absolute;
           top: 50%;
