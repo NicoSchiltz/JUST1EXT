@@ -8,6 +8,43 @@ import "./index.scss";
 
 import Avatar from "./components/Avatar";
 
+/**
+ * Temporary workaround for secondary monitors on MacOS where redraws don't happen
+ * @See https://bugs.chromium.org/p/chromium/issues/detail?id=971701
+ */
+if (
+  // From testing the following conditions seem to indicate that the popup was opened on a secondary monitor
+  window.screenLeft < 0 ||
+  window.screenTop < 0 ||
+  window.screenLeft > window.screen.width ||
+  window.screenTop > window.screen.height
+) {
+  chrome.runtime.getPlatformInfo(function (info) {
+    if (info.os === "mac") {
+      const fontFaceSheet = new CSSStyleSheet();
+      fontFaceSheet.insertRule(`
+        @keyframes redraw {
+          0% {
+            opacity: 1;
+          }
+          100% {
+            opacity: .99;
+          }
+        }
+      `);
+      fontFaceSheet.insertRule(`
+        html {
+          animation: redraw 1s linear infinite;
+        }
+      `);
+      document.adoptedStyleSheets = [
+        ...document.adoptedStyleSheets,
+        fontFaceSheet,
+      ];
+    }
+  });
+}
+
 const Popup = () => {
   const [state, setState] = useState({
     formInputs: {
@@ -25,12 +62,7 @@ const Popup = () => {
     // Get current url
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       if (tabs[0]) {
-        let currentUrl = tabs[0].url;
-
-        // Hack to only get the host property of the URL
-        const urlHack = document.createElement("a");
-        urlHack.href = currentUrl;
-        currentUrl = urlHack.host;
+        let currentUrl = tabs[0].url.split("/")[2];
 
         // Get user data and update state
         chrome.storage.sync.get(["websites", "dark"], function (result) {
@@ -127,7 +159,10 @@ const Popup = () => {
         newWebsites[currentUrl] = [email];
       }
 
-      if (oldWebsites[currentUrl] !== newWebsites[currentUrl]) {
+      if (
+        !oldWebsites ||
+        (oldWebsites && oldWebsites[currentUrl] !== newWebsites[currentUrl])
+      ) {
         chrome.storage.sync.set({ websites: newWebsites }, function () {
           setState({
             ...state,
@@ -142,6 +177,10 @@ const Popup = () => {
               action: "",
             });
           }, 3000);
+
+          chrome.action.setBadgeText({
+            text: newWebsites[currentUrl].length.toString(),
+          });
         });
       } else {
         setState({
@@ -180,7 +219,18 @@ const Popup = () => {
           ...state,
           knownEmailsOnCurrentUrl: newEmails,
         });
+
+        chrome.action.setBadgeText({
+          text: newEmails.length > 0 ? newEmails.length.toString() : "",
+        });
       });
+    });
+  };
+
+  const handleSkipCurrentAction = () => {
+    setState({
+      ...state,
+      action: "",
     });
   };
 
@@ -228,6 +278,7 @@ const Popup = () => {
             emails={state.knownEmailsOnCurrentUrl}
             handleSelectEmail={handleSelectEmail}
             handleRemoveEmail={handleRemoveEmail}
+            handleSkipCurrentAction={handleSkipCurrentAction}
             handleJustinSaysHi={handleJustinSaysHi}
             action={state.action}
           />

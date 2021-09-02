@@ -7,6 +7,7 @@ const Avatar = ({
   emails,
   handleSelectEmail,
   handleRemoveEmail,
+  handleSkipCurrentAction,
   handleJustinSaysHi,
   action,
 }) => {
@@ -21,7 +22,10 @@ const Avatar = ({
   return (
     <div className="avatar">
       <div className="avatar__message">
-        <div className="avatar__message-header">
+        <div
+          className="avatar__message-header"
+          onClick={handleSkipCurrentAction}
+        >
           <p
             dangerouslySetInnerHTML={{
               __html: message,
