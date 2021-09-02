@@ -1,6 +1,7 @@
 .avatar {
   &__message {
     position: relative;
+    min-height: 64px;
     width: 100%;
     border-radius: 0.25rem;
     padding: 0.5rem;
@@ -8,6 +9,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 
     &::after {
       content: " ";

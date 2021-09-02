@@ -42,6 +42,10 @@ ul {
   color: #3eba45;
 }
 
+.is-red {
+  color: #f13f6d;
+}
+
 .btn {
   transition: all 0.2s ease;
   padding: 0.75rem;
@@ -166,7 +170,7 @@ ul {
 
       &.password-copied {
         &:focus {
-          outline: #3eba45 2px auto
+          outline: #3eba45 2px auto;
         }
       }
     }

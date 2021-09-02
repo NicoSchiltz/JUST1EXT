@@ -16,7 +16,7 @@ const Popup = () => {
     },
     currentUrl: "",
     password: "",
-    passwordCopied: "",
+    action: "",
     dark: false,
     knownEmailsOnCurrentUrl: [],
   });
@@ -95,9 +95,10 @@ const Popup = () => {
     password.select();
     document.execCommand("copy");
 
-    setState({ ...state, passwordCopied: true });
+    setState({ ...state, action: "copy" });
+
     setTimeout(function () {
-      setState({ ...state, passwordCopied: false });
+      setState({ ...state, action: "" });
     }, 3000);
 
     let sel = document.getSelection();
@@ -126,14 +127,35 @@ const Popup = () => {
         newWebsites[currentUrl] = [email];
       }
 
-      chrome.storage.sync.set({ websites: newWebsites }, function () {
+      if (oldWebsites[currentUrl] !== newWebsites[currentUrl]) {
         chrome.storage.sync.set({ websites: newWebsites }, function () {
           setState({
             ...state,
             knownEmailsOnCurrentUrl: newWebsites[currentUrl],
+            action: "save",
           });
+
+          setTimeout(function () {
+            setState({
+              ...state,
+              knownEmailsOnCurrentUrl: newWebsites[currentUrl],
+              action: "",
+            });
+          }, 3000);
         });
-      });
+      } else {
+        setState({
+          ...state,
+          action: "alreadySaved",
+        });
+
+        setTimeout(function () {
+          setState({
+            ...state,
+            action: "",
+          });
+        }, 3000);
+      }
     });
   };
 
@@ -162,7 +184,31 @@ const Popup = () => {
     });
   };
 
+  const handleJustinSaysHi = () => {
+    setState({
+      ...state,
+      action: "hi",
+    });
+
+    setTimeout(function () {
+      setState({
+        ...state,
+        action: "",
+      });
+    }, 3000);
+  };
+
   const generateJustinMessage = () => {
+    if (state.action === "copy") {
+      return "<span class='is-green'>Ton mot de passe est copié, tu peux le coller où tu veux maintenant !</span>";
+    } else if (state.action === "save") {
+      return "<span class='is-green'>C'est noté ! Ne t'inquiète pas, je ne retiens que l'email et le nom du site !</span>";
+    } else if (state.action === "alreadySaved") {
+      return "<span class='is-red'>J'ai déjà enregistré cet email pour ce site !</span>";
+    } else if (state.action === "hi") {
+      return "Salut, moi c'est Justin ! Je peux t'aider à gérer tes mots de passe si tu veux !";
+    }
+
     if (state.knownEmailsOnCurrentUrl.length === 0) {
       return "Tu veux générer un nouveau mot de passe pour ce site ?";
     } else if (state.knownEmailsOnCurrentUrl.length === 1) {
@@ -182,6 +228,8 @@ const Popup = () => {
             emails={state.knownEmailsOnCurrentUrl}
             handleSelectEmail={handleSelectEmail}
             handleRemoveEmail={handleRemoveEmail}
+            handleJustinSaysHi={handleJustinSaysHi}
+            action={state.action}
           />
         </div>
         <div className="popup__switch-mode">
@@ -234,12 +282,12 @@ const Popup = () => {
             <div className="popup__password">
               <input
                 type="text"
-                className={state.passwordCopied ? "password-copied" : ""}
+                className={state.action === "copy" ? "password-copied" : ""}
                 value={state.password}
                 readOnly
               />
               <button onClick={handleCopyToClipboard}>
-                {state.passwordCopied ? (
+                {state.action === "copy" ? (
                   <i className="fas fa-check is-green"></i>
                 ) : (
                   <i className="fas fa-clipboard"></i>

@@ -2,7 +2,14 @@ import React, { useState } from "react";
 
 import "./index.scss";
 
-const Avatar = ({ message, emails, handleSelectEmail, handleRemoveEmail }) => {
+const Avatar = ({
+  message,
+  emails,
+  handleSelectEmail,
+  handleRemoveEmail,
+  handleJustinSaysHi,
+  action,
+}) => {
   const [state, setState] = useState({
     showEmails: false,
   });
@@ -20,16 +27,18 @@ const Avatar = ({ message, emails, handleSelectEmail, handleRemoveEmail }) => {
               __html: message,
             }}
           ></p>
-          {emails.length > 0 && (
+          {emails.length > 0 && action === "" && (
             <button
               className="avatar__show-emails-button btn btn-primary btn-rounded"
               onClick={handleShowEmails}
             >
-              {state.showEmails && <i className="fas fa-chevron-up"></i> || <i className="fas fa-chevron-down"></i>}
+              {(state.showEmails && <i className="fas fa-chevron-up"></i>) || (
+                <i className="fas fa-chevron-down"></i>
+              )}
             </button>
           )}
         </div>
-        {state.showEmails && emails.length > 0 && (
+        {state.showEmails && emails.length > 0 && action === "" && (
           <ul className="avatar__message-emails-list">
             {emails.map((email) => (
               <li key={email}>
@@ -52,6 +61,7 @@ const Avatar = ({ message, emails, handleSelectEmail, handleRemoveEmail }) => {
         height="128"
         width="128"
         viewBox="0 0 512 512"
+        onClick={handleJustinSaysHi}
       >
         <path
           d="m111 504s-10.30188-90.311127 78.440002-100.386658h37.973328v-17.493347s26.71167 11.473328 53.76001 1.279999c0 0 .853332 16.213348.853332 16.213348h44.373322s77.273468 7.714264 72.600006 100.386658z"
