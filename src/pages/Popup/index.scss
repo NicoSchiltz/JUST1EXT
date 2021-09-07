@@ -112,7 +112,7 @@ ul {
 
   &__top {
     margin-bottom: 0.5rem;
-    padding: 0 2rem;
+    padding: 0 2.5rem;
     width: 100%;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -139,7 +139,6 @@ ul {
     top: 0;
     right: 0.65rem;
     text-align: right;
-    padding-left: 0.5rem;
 
     label {
       cursor: pointer;
@@ -202,6 +201,10 @@ ul {
   }
 
   &__footer {
+/*     display: flex;
+    align-items: center;
+    justify-content: space-between; */
+    position: relative;
     text-align: center;
     font-size: 0.725rem;
     font-weight: 400;
@@ -210,6 +213,22 @@ ul {
 
     a {
       color: #0111224d;
+    }
+  }
+
+  &__switch-lang {
+    button {
+      font-size: 0.625rem;
+      font-weight: 400;
+      padding: 0 4px;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &.active {
+        font-weight: 600;
+      }
     }
   }
 }
@@ -225,10 +244,26 @@ ul {
 
   &__input-container {
     margin-top: 0.5rem;
+    position: relative;
   }
 
   &__input {
     border-color: #011122;
+  }
+
+  &__email {
+    position: relative;
+
+    &-delete-btn {
+      position: absolute;
+      top: 50%;
+      right: 0.25rem;
+      transform: translateY(-50%);
+    }
+
+    input {
+      padding-right: 2rem;
+    }
   }
 
   &__button {

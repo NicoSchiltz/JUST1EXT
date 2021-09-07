@@ -56,29 +56,41 @@ const Popup = () => {
     action: "",
     dark: false,
     knownEmailsOnCurrentUrl: [],
+    lang: "FR",
   });
 
   useEffect(() => {
-    // Get current url
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+      // Get current url
       if (tabs[0]) {
         let currentUrl = tabs[0].url.split("/")[2];
 
         // Get user data and update state
-        chrome.storage.sync.get(["websites", "dark"], function (result) {
-          let knownEmailsOnCurrentUrl = state.knownEmailsOnCurrentUrl;
+        chrome.storage.sync.get(
+          ["websites", "dark", "lastEmail"],
+          function (result) {
+            let knownEmailsOnCurrentUrl = state.knownEmailsOnCurrentUrl;
+            if (result.websites && result.websites[currentUrl]) {
+              knownEmailsOnCurrentUrl = result.websites[currentUrl];
+            }
 
-          if (result.websites && result.websites[currentUrl]) {
-            knownEmailsOnCurrentUrl = result.websites[currentUrl];
+            let lastEmail = state.formInputs.email;
+            if (result.lastEmail) {
+              lastEmail = result.lastEmail;
+            }
+
+            setState({
+              ...state,
+              currentUrl,
+              dark: result.dark || false,
+              knownEmailsOnCurrentUrl,
+              formInputs: {
+                ...state.formInputs,
+                email: lastEmail,
+              },
+            });
           }
-
-          setState({
-            ...state,
-            currentUrl,
-            dark: result.dark || false,
-            knownEmailsOnCurrentUrl,
-          });
-        });
+        );
       }
     });
   }, []);
@@ -102,6 +114,7 @@ const Popup = () => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     generatePassword();
+    saveLastEmail();
   };
 
   const generatePassword = () => {
@@ -122,6 +135,11 @@ const Popup = () => {
     setState({ ...state, password });
   };
 
+  const saveLastEmail = () => {
+    const lastEmail = state.formInputs.email;
+    chrome.storage.sync.set({ lastEmail }, function () {});
+  };
+
   const handleCopyToClipboard = () => {
     const password = document.querySelector(".popup__password input");
     password.select();
@@ -131,7 +149,7 @@ const Popup = () => {
 
     setTimeout(function () {
       setState({ ...state, action: "" });
-    }, 3000);
+    }, 4500);
 
     let sel = document.getSelection();
     sel.removeAllRanges();
@@ -176,7 +194,7 @@ const Popup = () => {
               knownEmailsOnCurrentUrl: newWebsites[currentUrl],
               action: "",
             });
-          }, 3000);
+          }, 4500);
 
           chrome.action.setBadgeText({
             text: newWebsites[currentUrl].length.toString(),
@@ -193,13 +211,25 @@ const Popup = () => {
             ...state,
             action: "",
           });
-        }, 3000);
+        }, 4500);
       }
     });
   };
 
   const handleSelectEmail = (email) => {
     setState({ ...state, formInputs: { ...state.formInputs, email } });
+  };
+
+  const handleClearEmail = () => {
+    chrome.storage.sync.set({ lastEmail: "" }, function () {
+      setState({
+        ...state,
+        formInputs: {
+          ...state.formInputs,
+          email: "",
+        },
+      });
+    });
   };
 
   const handleRemoveEmail = (email) => {
@@ -245,7 +275,7 @@ const Popup = () => {
         ...state,
         action: "",
       });
-    }, 3000);
+    }, 4500);
   };
 
   const generateJustinMessage = () => {
@@ -301,7 +331,7 @@ const Popup = () => {
         <form className="form" onSubmit={handleFormSubmit}>
           <div className="form__group">
             <label htmlFor="email">Email</label>
-            <div className="form__input-container">
+            <div className="form__email form__input-container">
               <input
                 required
                 className="form__input"
@@ -310,6 +340,15 @@ const Popup = () => {
                 onChange={handleInputChange("email")}
                 value={state.formInputs.email}
               />
+              {state.formInputs.email.length > 0 && (
+                <button
+                  className="form__email-delete-btn"
+                  type="button"
+                  onClick={handleClearEmail}
+                >
+                  <i className="fas fa-times"></i>
+                </button>
+              )}
             </div>
           </div>
           <div className="form__group">
@@ -355,6 +394,10 @@ const Popup = () => {
       </main>
 
       <footer className="popup__footer">
+{/*         <div className="popup__switch-lang">
+          <button className={state.lang === "FR" ? "active" : ""}>FR</button>|
+          <button className={state.lang === "EN" ? "active" : ""}>EN</button>
+        </div> */}
         <a href="https://www.nicolas-schiltz.fr" target="_blank">
           © Nicolas Schiltz
         </a>
