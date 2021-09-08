@@ -1,49 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { render } from "react-dom";
 
+// External libs
 import hmacSHA256 from "crypto-js/hmac-sha512";
 import Base64 from "crypto-js/enc-base64";
 
+// Translations
+import "../../translations/i18n";
+import { useTranslation } from "react-i18next";
+
+// Styles
+import "../../assets/scss/main.scss";
 import "./index.scss";
 
+// Components
 import Avatar from "./components/Avatar";
 
-/**
- * Temporary workaround for secondary monitors on MacOS where redraws don't happen
- * @See https://bugs.chromium.org/p/chromium/issues/detail?id=971701
- */
-if (
-  // From testing the following conditions seem to indicate that the popup was opened on a secondary monitor
-  window.screenLeft < 0 ||
-  window.screenTop < 0 ||
-  window.screenLeft > window.screen.width ||
-  window.screenTop > window.screen.height
-) {
-  chrome.runtime.getPlatformInfo(function (info) {
-    if (info.os === "mac") {
-      const fontFaceSheet = new CSSStyleSheet();
-      fontFaceSheet.insertRule(`
-        @keyframes redraw {
-          0% {
-            opacity: 1;
-          }
-          100% {
-            opacity: .99;
-          }
-        }
-      `);
-      fontFaceSheet.insertRule(`
-        html {
-          animation: redraw 1s linear infinite;
-        }
-      `);
-      document.adoptedStyleSheets = [
-        ...document.adoptedStyleSheets,
-        fontFaceSheet,
-      ];
-    }
-  });
-}
+// Modules
+import fixSecondaryMonitorBug from "./modules/fix";
+
+fixSecondaryMonitorBug();
 
 const Popup = () => {
   const [state, setState] = useState({
@@ -56,8 +32,9 @@ const Popup = () => {
     action: "",
     dark: false,
     knownEmailsOnCurrentUrl: [],
-    lang: "FR",
   });
+
+  const [t, i18n] = useTranslation();
 
   useEffect(() => {
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
@@ -141,7 +118,7 @@ const Popup = () => {
   };
 
   const handleCopyToClipboard = () => {
-    const password = document.querySelector(".popup__password input");
+    const password = document.querySelector(".c-input-password input");
     password.select();
     document.execCommand("copy");
 
@@ -220,7 +197,7 @@ const Popup = () => {
     setState({ ...state, formInputs: { ...state.formInputs, email } });
   };
 
-  const handleClearEmail = () => {
+  const handleClearEmailInput = () => {
     chrome.storage.sync.set({ lastEmail: "" }, function () {
       setState({
         ...state,
@@ -257,7 +234,7 @@ const Popup = () => {
     });
   };
 
-  const handleSkipCurrentAction = () => {
+  const handleSkipCurrentActionMessage = () => {
     setState({
       ...state,
       action: "",
@@ -278,43 +255,57 @@ const Popup = () => {
     }, 4500);
   };
 
+  const handleChangeLanguageTo = (lang) => {
+    i18n.changeLanguage(lang);
+  };
+
   const generateJustinMessage = () => {
     if (state.action === "copy") {
-      return "<span class='is-green'>Ton mot de passe est copié, tu peux le coller où tu veux maintenant !</span>";
+      return `<span class='is-green'>${t(
+        "Copied ! You can paste it wherever you want now !"
+      )}</span>`;
     } else if (state.action === "save") {
-      return "<span class='is-green'>C'est noté ! Ne t'inquiète pas, je ne retiens que l'email et le nom du site !</span>";
+      return `<span class='is-green'>${t(
+        "Got it ! Don't worry, I'll only keep the email and the domain name !"
+      )}</span>`;
     } else if (state.action === "alreadySaved") {
-      return "<span class='is-red'>J'ai déjà enregistré cet email pour ce site !</span>";
+      return `<span class='is-red'> ${t(
+        "I already saved this email for this site !"
+      )} </span>`;
     } else if (state.action === "hi") {
-      return "Salut, moi c'est Justin ! Je peux t'aider à gérer tes mots de passe si tu veux !";
+      return t(
+        "Hi, I'm Justin ! I can help you manage your passwords if you want !"
+      );
     }
 
     if (state.knownEmailsOnCurrentUrl.length === 0) {
-      return "Tu veux générer un nouveau mot de passe pour ce site ?";
+      return t("Do you want to generate a new password for this site ?");
     } else if (state.knownEmailsOnCurrentUrl.length === 1) {
-      return `J'ai 1 email enregistré pour ce site !`;
+      return t("I have 1 email saved for this site !");
     } else {
-      return `J'ai ${state.knownEmailsOnCurrentUrl.length} emails enregistrés pour ce site !`;
+      return t("I have {{X}} emails saved for this site !", {
+        X: state.knownEmailsOnCurrentUrl.length,
+      });
     }
   };
 
   return (
-    <div className={`popup ${state.dark ? "dark" : "light"}`}>
-      <header className="popup__header">
-        <div className="popup__top">{state.currentUrl}</div>
-        <div className="popup__avatar">
+    <div className={`c-popup ${state.dark ? "dark" : "light"}`}>
+      <header className="c-popup__header">
+        <div className="c-popup__top">{state.currentUrl}</div>
+        <div className="c-popup__avatar">
           <Avatar
             message={generateJustinMessage()}
             emails={state.knownEmailsOnCurrentUrl}
             handleSelectEmail={handleSelectEmail}
             handleRemoveEmail={handleRemoveEmail}
-            handleSkipCurrentAction={handleSkipCurrentAction}
+            handleSkipCurrentActionMessage={handleSkipCurrentActionMessage}
             handleJustinSaysHi={handleJustinSaysHi}
             action={state.action}
           />
         </div>
-        <div className="popup__switch-mode">
-          <label>
+        <div className="c-popup__switch-mode">
+          <label className="c-switch-mode">
             <input
               type="checkbox"
               checked={state.dark}
@@ -327,36 +318,30 @@ const Popup = () => {
         </div>
       </header>
 
-      <main className="popup__main">
-        <form className="form" onSubmit={handleFormSubmit}>
-          <div className="form__group">
+      <main className="c-popup__main">
+        <form className="c-form" onSubmit={handleFormSubmit}>
+          <div className="c-form-group">
             <label htmlFor="email">Email</label>
-            <div className="form__email form__input-container">
+            <div className="c-form-group__input-container c-form-group__input-container--email">
               <input
                 required
-                className="form__input"
                 id="email "
                 type="email"
                 onChange={handleInputChange("email")}
                 value={state.formInputs.email}
               />
               {state.formInputs.email.length > 0 && (
-                <button
-                  className="form__email-delete-btn"
-                  type="button"
-                  onClick={handleClearEmail}
-                >
+                <button type="button" onClick={handleClearEmailInput}>
                   <i className="fas fa-times"></i>
                 </button>
               )}
             </div>
           </div>
-          <div className="form__group">
+          <div className="c-form-group">
             <label htmlFor="password">Secret</label>
-            <div className="form__input-container">
+            <div className="c-form-group__input-container">
               <input
                 required
-                className="form__input"
                 id="password"
                 type="password"
                 onChange={handleInputChange("passphrase")}
@@ -364,12 +349,14 @@ const Popup = () => {
               />
             </div>
           </div>
-          <button className="form__button btn btn-primary">Let's Go !</button>
+          <button type="submit" className="c-form__button btn btn-primary">
+            Let's Go !
+          </button>
         </form>
 
         {state.password && (
-          <div className="popup__bottom">
-            <div className="popup__password">
+          <div className="c-popup__bottom">
+            <div className="c-input-password">
               <input
                 type="text"
                 className={state.action === "copy" ? "password-copied" : ""}
@@ -384,23 +371,36 @@ const Popup = () => {
                 )}
               </button>
             </div>
-            <div className="popup__actions">
+            <div className="c-actions">
               <button className="btn btn-success" onClick={handleSaveData}>
-                <i className="fas fa-save"></i> Enregistrer
+                <i className="fas fa-save"></i> {t("Save")}
               </button>
             </div>
           </div>
         )}
       </main>
 
-      <footer className="popup__footer">
-{/*         <div className="popup__switch-lang">
-          <button className={state.lang === "FR" ? "active" : ""}>FR</button>|
-          <button className={state.lang === "EN" ? "active" : ""}>EN</button>
-        </div> */}
-        <a href="https://www.nicolas-schiltz.fr" target="_blank">
-          © Nicolas Schiltz
-        </a>
+      <footer className="c-popup__footer">
+        <div className="c-switch-lang">
+          <button
+            onClick={() => handleChangeLanguageTo("fr")}
+            className={i18n.language === "fr" ? "active" : ""}
+          >
+            FR
+          </button>
+          |
+          <button
+            onClick={() => handleChangeLanguageTo("en")}
+            className={i18n.language === "en" ? "active" : ""}
+          >
+            EN
+          </button>
+        </div>
+        <div className="c-copyright">
+          <a href="https://www.nicolas-schiltz.fr" target="_blank">
+            © Nicolas Schiltz
+          </a>
+        </div>
       </footer>
     </div>
   );

@@ -7,7 +7,7 @@ const Avatar = ({
   emails,
   handleSelectEmail,
   handleRemoveEmail,
-  handleSkipCurrentAction,
+  handleSkipCurrentActionMessage,
   handleJustinSaysHi,
   action,
 }) => {
@@ -20,11 +20,11 @@ const Avatar = ({
   };
 
   return (
-    <div className="avatar">
-      <div className="avatar__message">
+    <div className="c-avatar">
+      <div className="c-avatar__message">
         <div
-          className="avatar__message-header"
-          onClick={handleSkipCurrentAction}
+          className="c-avatar__message-header"
+          onClick={handleSkipCurrentActionMessage}
         >
           <p
             dangerouslySetInnerHTML={{
@@ -33,7 +33,7 @@ const Avatar = ({
           ></p>
           {emails.length > 0 && action === "" && (
             <button
-              className="avatar__show-emails-button btn btn-primary btn-rounded"
+              className="c-avatar__show-emails-button btn btn-primary btn-rounded"
               onClick={handleShowEmails}
             >
               {(state.showEmails && <i className="fas fa-chevron-up"></i>) || (
@@ -43,7 +43,7 @@ const Avatar = ({
           )}
         </div>
         {state.showEmails && emails.length > 0 && action === "" && (
-          <ul className="avatar__message-emails-list">
+          <ul className="c-avatar__message-emails-list">
             {emails.map((email) => (
               <li key={email}>
                 <button onClick={() => handleSelectEmail(email)}>
@@ -131,12 +131,12 @@ const Avatar = ({
         <path
           d="m209.066681 238.066681c4.712829 0 8.533325 3.820496 8.533325 8.533325 0 4.71283-3.820496 8.533325-8.533325 8.533325-4.71283 0-8.533356-3.820495-8.533356-8.533325 0-4.712829 3.820526-8.533325 8.533356-8.533325z"
           fill="#3b434f"
-          className="avatar__eye"
+          className="c-avatar__eye"
         />
         <path
           d="m303.786652 238.066681c4.712829 0 8.533325 3.820496 8.533325 8.533325 0 4.71283-3.820496 8.533325-8.533325 8.533325-4.712799 0-8.533326-3.820495-8.533326-8.533325 0-4.712829 3.820527-8.533325 8.533326-8.533325z"
           fill="#3b434f"
-          className="avatar__eye"
+          className="c-avatar__eye"
         />
         <path
           d="m307.626678 269.640015c5.891022 0 10.666657 4.775634 10.666657 10.666656s-4.775635 10.666657-10.666657 10.666657c-5.891052 0-10.666656-4.775635-10.666656-10.666657s4.775604-10.666656 10.666656-10.666656z"

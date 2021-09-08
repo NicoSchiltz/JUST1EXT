@@ -1,84 +1,6 @@
-* {
-  box-sizing: border-box;
-}
+@import "../../assets/scss/main.scss";
 
-body {
-  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-p {
-  margin: 0;
-}
-
-a {
-  text-decoration: none;
-}
-
-button {
-  cursor: pointer;
-  border: none;
-  background: none;
-}
-
-input {
-  width: 100%;
-  height: 2rem;
-  border-radius: 0.25rem;
-  padding: 0.5rem;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.is-green {
-  color: #3eba45;
-}
-
-.is-red {
-  color: #f13f6d;
-}
-
-.btn {
-  transition: all 0.2s ease;
-  padding: 0.75rem;
-  border: 2px solid transparent;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.625rem;
-  font-weight: 600;
-  border-radius: 0.25rem;
-  color: #fff;
-
-  &-rounded {
-    border-radius: 4rem;
-  }
-
-  &-primary {
-    background-color: #011122;
-
-    &:hover {
-      background-color: #011122e1;
-    }
-  }
-
-  &-success {
-    background-color: #3eba45;
-
-    &:hover {
-      background-color: #36a73c;
-    }
-  }
-}
-
-.popup {
+.c-popup {
   min-width: 300px;
   padding: 2rem;
   padding-top: 1rem;
@@ -86,28 +8,32 @@ ul {
   margin: 0;
 
   &.dark {
-    background-color: #011122;
-    color: #fff;
+    background-color: $dark-blue;
+    color: $white;
 
-    .avatar {
-      color: #011122;
+    a {
+      color: $white;
     }
 
-    form {
+    .c-avatar {
+      color: $dark-blue;
+    }
+
+    .c-form {
       label {
-        color: #011122;
+        color: $dark-blue;
       }
     }
 
-    .popup__footer {
-      a {
-        color: #fff;
+    .c-switch-lang {
+      button {
+        color: $white;
       }
     }
   }
 
   &.light {
-    background-color: #ecf3fe;
+    background-color: $light-blue;
   }
 
   &__top {
@@ -129,81 +55,15 @@ ul {
     bottom: -6px;
   }
 
-  &__title {
-    font-size: 1rem;
-    margin: 0;
-  }
-
-  &__switch-mode {
-    position: absolute;
-    top: 0;
-    right: 0.65rem;
-    text-align: right;
-
-    label {
-      cursor: pointer;
-    }
-
-    input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-      margin: 0;
-    }
-  }
-
   &__main {
     position: relative;
     z-index: 2;
   }
 
-  &__password {
-    margin-top: 1.25rem;
-    position: relative;
-
-    input {
-      font-size: 0.875rem;
-      letter-spacing: 2px;
-      text-align: center;
-      border: none;
-
-      &.password-copied {
-        &:focus {
-          outline: #3eba45 2px auto;
-        }
-      }
-    }
-
-    button {
-      position: absolute;
-      border-left: 1px solid #ecf3fe;
-      height: calc(100% - 2px);
-      right: 0;
-      padding: 0 0.625rem;
-      top: 1px;
-    }
-  }
-
-  &__actions {
+  &__footer {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-top: 0.875rem;
-
-    button {
-      width: 100%;
-      margin-right: 0.5rem;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
-
-  &__footer {
-/*     display: flex;
-    align-items: center;
-    justify-content: space-between; */
+    justify-content: space-between;
     position: relative;
     text-align: center;
     font-size: 0.725rem;
@@ -215,59 +75,116 @@ ul {
       color: #0111224d;
     }
   }
+}
 
-  &__switch-lang {
-    button {
-      font-size: 0.625rem;
-      font-weight: 400;
-      padding: 0 4px;
+.c-switch-mode {
+  position: absolute;
+  top: 0;
+  right: 0.65rem;
+  text-align: right;
 
-      &:first-child {
-        padding-left: 0;
+  label {
+    cursor: pointer;
+  }
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+  }
+}
+
+.c-input-password {
+  margin-top: 1.25rem;
+  position: relative;
+
+  input {
+    font-size: 0.875rem;
+    letter-spacing: 2px;
+    text-align: center;
+    border: none;
+
+    &.password-copied {
+      &:focus {
+        outline: $green 2px auto;
       }
+    }
+  }
 
-      &.active {
-        font-weight: 600;
-      }
+  button {
+    position: absolute;
+    border-left: 1px solid $light-blue;
+    height: calc(100% - 2px);
+    right: 0;
+    padding: 0 0.625rem;
+    top: 1px;
+  }
+}
+
+.c-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.875rem;
+
+  button {
+    width: 100%;
+    margin-right: 0.5rem;
+
+    &:last-child {
+      margin-right: 0;
     }
   }
 }
 
-.form {
-  background-color: #fff;
+.c-form {
+  background-color: $white;
   border-radius: 0.25rem;
   padding: 1rem;
 
-  &__group {
+  .c-form-group {
     margin-bottom: 1rem;
-  }
 
-  &__input-container {
-    margin-top: 0.5rem;
-    position: relative;
-  }
+    &__input-container {
+      margin-top: 0.5rem;
+      position: relative;
 
-  &__input {
-    border-color: #011122;
-  }
+      &--email {
+        position: relative;
 
-  &__email {
-    position: relative;
+        input {
+          padding-right: 2rem;
+        }
 
-    &-delete-btn {
-      position: absolute;
-      top: 50%;
-      right: 0.25rem;
-      transform: translateY(-50%);
-    }
-
-    input {
-      padding-right: 2rem;
+        button {
+          position: absolute;
+          top: 50%;
+          right: 0.25rem;
+          transform: translateY(-50%);
+        }
+      }
     }
   }
 
   &__button {
     width: 100%;
     margin-top: 0.25rem;
+  }
+}
+
+.c-switch-lang {
+  button {
+    font-size: 0.625rem;
+    font-weight: 400;
+    padding: 0 4px;
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &.active {
+      font-weight: 600;
+    }
   }
 }

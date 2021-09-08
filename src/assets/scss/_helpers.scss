@@ -1,0 +1,41 @@
+/********* COLORS ***********/
+.is-green {
+  color: $green;
+}
+
+.is-red {
+  color: $red;
+}
+
+/********* BUTTONS ***********/
+.btn {
+  transition: all 0.2s ease;
+  padding: 0.75rem;
+  border: 2px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  border-radius: 0.25rem;
+  color: $white;
+
+  &-rounded {
+    border-radius: 4rem;
+  }
+
+  &-primary {
+    background-color: $dark-blue;
+
+    &:hover {
+      background-color: $dark-blue-hover;
+    }
+  }
+
+  &-success {
+    background-color: $green;
+
+    &:hover {
+      background-color: $green-hover;
+    }
+  }
+}

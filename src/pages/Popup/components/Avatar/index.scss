@@ -1,4 +1,6 @@
-.avatar {
+@import "../../../../assets/scss/main.scss";
+
+.c-avatar {
   &__message {
     position: relative;
     min-height: 69px;
@@ -27,7 +29,7 @@
     &-header {
       width: 100%;
       position: relative;
-      padding: 0 1.25rem;
+      padding: 0 1.2rem;
     }
 
     &-emails-list {
@@ -40,7 +42,7 @@
 
         button {
           text-decoration: underline;
-          transition: all .2s ease;
+          transition: all 0.2s ease;
 
           &:hover {
             text-decoration: none;
@@ -65,8 +67,8 @@
     top: 50%;
     transform: translateY(-50%);
     padding: 0;
-    height: 1.25rem;
-    width: 1.25rem;
+    height: 1rem;
+    width: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
