@@ -2,7 +2,7 @@ import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
-import translationFR from "./fr_FR.json";
+import translationFR from "./fr.json";
 
 i18n
   .use(initReactI18next)

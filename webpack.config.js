@@ -37,7 +37,7 @@ var options = {
   mode: process.env.NODE_ENV || "development",
   entry: {
     popup: path.join(__dirname, "src", "pages", "Popup", "index.jsx"),
-    background: path.join(__dirname, 'src', 'pages', 'Background', 'index.js'),
+    background: path.join(__dirname, "src", "pages", "Background", "index.js"),
   },
   chromeExtensionBoilerplate: {
     notHotReload: ["contentScript"],
@@ -120,12 +120,16 @@ var options = {
             // generates the manifest file using the package.json informations
             return Buffer.from(
               JSON.stringify({
-                description: process.env.npm_package_description,
                 version: process.env.npm_package_version,
                 ...JSON.parse(content.toString()),
               })
             );
           },
+        },
+        {
+          from: "src/translations/_locales",
+          to: path.join(__dirname, "build/_locales"),
+          force: true,
         },
       ],
     }),

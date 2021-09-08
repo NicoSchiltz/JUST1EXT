@@ -1,6 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Justin Maudepasse",
+  "name": "__MSG_appName__",
+  "description": "__MSG_appDesc__",
+  "default_locale": "en",
   "background": {
     "service_worker": "background.bundle.js"
   },
