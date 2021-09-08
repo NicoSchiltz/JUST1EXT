@@ -6,12 +6,12 @@ Chrome Extension to help you generate & manage your passwords without any data s
 
 Install :
 
-`npm install` ou `yarn install`
+`npm install` or `yarn install`
 
 Dev :
 
-`npm run start` ou `yarn start`
+`npm run start` or `yarn start`
 
 Build :
 
-`npm run build` ou `yarn build`
+`npm run build` or `yarn build`
