@@ -384,14 +384,14 @@ const Popup = () => {
         <div className="c-switch-lang">
           <button
             onClick={() => handleChangeLanguageTo("fr")}
-            className={i18n.language === "fr" ? "active" : ""}
+            className={i18n.language.startsWith("fr") ? "active" : ""}
           >
             FR
           </button>
           |
           <button
             onClick={() => handleChangeLanguageTo("en")}
-            className={i18n.language === "en" ? "active" : ""}
+            className={i18n.language.startsWith("en") ? "active" : ""}
           >
             EN
           </button>
