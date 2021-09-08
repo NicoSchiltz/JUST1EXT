@@ -9,11 +9,11 @@
     "default_icon": "icon.png"
   },
   "icons": {
-    "128": "icon-128.png"
+    "128": "icon.png"
   },
   "web_accessible_resources": [
     {
-      "resources": ["icon.png", "icon-128.png"],
+      "resources": ["icon.png"],
       "matches": []
     }
   ],
