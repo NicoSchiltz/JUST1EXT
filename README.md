@@ -1,6 +1,6 @@
 # 🔒 Just1 Password / Justin Maudepasse
 
-Chrome Extension to help you generate & manage your passwords without any data storage !
+Chrome Extension to help you generate & manage your passwords without storing them !
 
 ## Webpack
 

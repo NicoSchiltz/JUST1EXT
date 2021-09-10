@@ -262,11 +262,11 @@ const Popup = () => {
   const generateJustinMessage = () => {
     if (state.action === "copy") {
       return `<span class='is-green'>${t(
-        "Copied ! You can paste it wherever you want now !"
+        "Password copied ! You can paste it wherever you want now !"
       )}</span>`;
     } else if (state.action === "save") {
       return `<span class='is-green'>${t(
-        "Got it ! Don't worry, I'll only keep the email and the domain name !"
+        "Got it ! Don't worry, I'll only remember the email and the site name !"
       )}</span>`;
     } else if (state.action === "alreadySaved") {
       return `<span class='is-red'> ${t(

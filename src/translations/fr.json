@@ -5,6 +5,6 @@
   "I have 1 email saved for this site !": "J'ai 1 email enregistré pour ce site !",
   "I have {{X}} emails saved for this site !": "J'ai {{X}} emails enregistrés pour ce site !",
   "I already saved this email for this site !": "J'ai déjà enregistré cet email pour ce site !",
-  "Got it ! Don't worry, I'll only keep the email and the domain name !": "C'est noté ! Ne t'inquiète pas, je ne retiens que l'email et le nom du site !",
-  "Copied ! You can paste it wherever you want now !": "Ton mot de passe est copié, tu peux le coller où tu veux maintenant !"
+  "Got it ! Don't worry, I'll only remember the email and the site name !": "C'est noté ! Ne t'inquiète pas, je ne retiendrai que l'email et le nom du site !",
+  "Password copied ! You can paste it wherever you want now !": "Mot de passe copié ! Tu peux le coller où tu veux maintenant !"
 }
