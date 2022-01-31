@@ -1,10 +1,10 @@
 {
   "Save": "Enregistrer",
-  "Do you want to generate a new password for this site ?": "Tu veux générer un nouveau mot de passe pour ce site ?",
-  "Hi, I'm Justin ! I can help you manage your passwords if you want !": "Salut, moi c'est Justin ! Je peux t'aider à gérer tes mots de passe si tu veux !",
-  "I have 1 email saved for this site !": "J'ai 1 email enregistré pour ce site !",
-  "I have {{X}} emails saved for this site !": "J'ai {{X}} emails enregistrés pour ce site !",
-  "I already saved this email for this site !": "J'ai déjà enregistré cet email pour ce site !",
-  "Got it ! Don't worry, I'll only remember the email and the site name !": "C'est noté ! Ne t'inquiète pas, je ne retiendrai que l'email et le nom du site !",
-  "Password copied ! You can paste it wherever you want now !": "Mot de passe copié ! Tu peux le coller où tu veux maintenant !"
+  "Do you want to generate a new password ?": "Tu veux générer un nouveau mot de passe pour ce site ?",
+  "Hi, I'm Justin ! I can help you with your passwords if you want !": "Salut, moi c'est Justin ! Je peux t'aider à gérer tes mots de passe si tu veux !",
+  "I have 1 registered email for this site !": "J'ai 1 email enregistré pour ce site !",
+  "I have {{X}} registered emails for this site !": "J'ai {{X}} emails enregistrés pour ce site !",
+  "I have already saved this email here !": "J'ai déjà enregistré cet email pour ce site !",
+  "Got it ! Don't worry, I'll only keep the email and the domain name !": "C'est noté ! Ne t'inquiète pas, je ne retiendrai que l'email et le nom du site !",
+  "Password copied ! You can paste it anywhere you want now !": "Mot de passe copié ! Tu peux le coller où tu veux maintenant !"
 }

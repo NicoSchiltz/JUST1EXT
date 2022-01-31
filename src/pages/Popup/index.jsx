@@ -262,28 +262,28 @@ const Popup = () => {
   const generateJustinMessage = () => {
     if (state.action === "copy") {
       return `<span class='is-green'>${t(
-        "Password copied ! You can paste it wherever you want now !"
+        "Password copied ! You can paste it anywhere you want now !"
       )}</span>`;
     } else if (state.action === "save") {
       return `<span class='is-green'>${t(
-        "Got it ! Don't worry, I'll only remember the email and the site name !"
+        "Got it ! Don't worry, I'll only keep the email and the domain name !"
       )}</span>`;
     } else if (state.action === "alreadySaved") {
       return `<span class='is-red'> ${t(
-        "I already saved this email for this site !"
+        "I have already saved this email here !"
       )} </span>`;
     } else if (state.action === "hi") {
       return t(
-        "Hi, I'm Justin ! I can help you manage your passwords if you want !"
+        "Hi, I'm Justin ! I can help you with your passwords if you want !"
       );
     }
 
     if (state.knownEmailsOnCurrentUrl.length === 0) {
-      return t("Do you want to generate a new password for this site ?");
+      return t("Do you want to generate a new password ?");
     } else if (state.knownEmailsOnCurrentUrl.length === 1) {
-      return t("I have 1 email saved for this site !");
+      return t("I have 1 registered email for this site !");
     } else {
-      return t("I have {{X}} emails saved for this site !", {
+      return t("I have {{X}} registered emails for this site !", {
         X: state.knownEmailsOnCurrentUrl.length,
       });
     }

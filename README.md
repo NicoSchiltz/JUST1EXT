@@ -1,6 +1,6 @@
-# 🔒 Just1 Password / Justin Maudepasse
+# 🔒 Just1 Password
 
-Chrome Extension to help you generate & manage your passwords without storing them !
+Just1 Password is a Chrome Extension to help you generate & manage your passwords without storing them !
 
 Download the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/empty-title/kadnpfobnjcfechkibldpapjgolgpcbn).
 
