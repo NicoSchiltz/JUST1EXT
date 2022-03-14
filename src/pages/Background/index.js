@@ -4,8 +4,6 @@ const setBadgeText = () => {
       if (tabs[0]) {
         let currentUrl = tabs[0].url.split("/")[2];
 
-        console.log(currentUrl);
-
         // Get user data and update state
         chrome.storage.sync.get(["websites"], function (result) {
           let knownEmailsOnCurrentUrl = 0;

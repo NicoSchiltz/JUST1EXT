@@ -1,19 +1,99 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+// Actions
+import {
+  setKnownEmailsOnCurentUrl,
+  setAction,
+} from "../../store/global/actions";
+import { setFormEmail } from "../../store/generator/actions";
+
+// Translations
+import "../../../../translations/i18n";
+import { useTranslation } from "react-i18next";
+
+// Styles
 import "./index.scss";
 
-const Avatar = ({
-  message,
-  emails,
-  handleSelectEmail,
-  handleRemoveEmail,
-  handleSkipCurrentActionMessage,
-  handleJustinSaysHi,
-  action,
-}) => {
+const Avatar = () => {
+  const dispatch = useDispatch();
+
+  const [t, i18n] = useTranslation();
+
   const [state, setState] = useState({
     showEmails: false,
   });
+
+  const { currentUrl, knownEmailsOnCurrentUrl, action } = useSelector(
+    (state) => state.global
+  );
+
+  const generateJustinMessage = () => {
+    if (action === "copy") {
+      return `<span class='is-green'>${t(
+        "Password copied ! You can paste it anywhere you want now !"
+      )}</span>`;
+    } else if (action === "save") {
+      return `<span class='is-green'>${t(
+        "Got it ! Don't worry, I'll only keep the email and the domain name !"
+      )}</span>`;
+    } else if (action === "alreadySaved") {
+      return `<span class='is-red'> ${t(
+        "I have already saved this email here !"
+      )} </span>`;
+    } else if (action === "hi") {
+      return t(
+        "Hi, I'm Justin ! I can help you with your passwords if you want !"
+      );
+    }
+
+    if (knownEmailsOnCurrentUrl.length === 0) {
+      return t("Do you want to generate a new password ?");
+    } else if (knownEmailsOnCurrentUrl.length === 1) {
+      return t("I have 1 registered email for this site !");
+    } else {
+      return t("I have {{X}} registered emails for this site !", {
+        X: knownEmailsOnCurrentUrl.length,
+      });
+    }
+  };
+
+  const handleJustinSaysHi = () => {
+    dispatch(setAction("hi"));
+
+    setTimeout(function () {
+      dispatch(setAction(""));
+    }, 4500);
+  };
+
+  const handleSkipCurrentActionMessage = () => {
+    dispatch(setAction(""));
+  };
+
+  const handleSelectEmail = (email) => {
+    dispatch(setFormEmail(email));
+  };
+
+  const handleRemoveEmail = (email) => {
+    chrome.storage.sync.get(["websites"], function (result) {
+      const oldWebsites = result.websites;
+      const newWebsites = { ...oldWebsites };
+
+      const newEmails = oldWebsites[currentUrl].filter(
+        (websiteEmail) => websiteEmail !== email
+      );
+
+      newWebsites[currentUrl] = newEmails;
+
+      chrome.storage.sync.set({ websites: newWebsites }, function () {
+        dispatch(setKnownEmailsOnCurentUrl(newEmails));
+
+        chrome.action.setBadgeText({
+          text: newEmails.length > 0 ? newEmails.length.toString() : "",
+        });
+      });
+    });
+  };
 
   const handleShowEmails = () => {
     setState({ ...state, showEmails: !state.showEmails });
@@ -28,10 +108,10 @@ const Avatar = ({
         >
           <p
             dangerouslySetInnerHTML={{
-              __html: message,
+              __html: generateJustinMessage(),
             }}
           ></p>
-          {emails.length > 0 && action === "" && (
+          {knownEmailsOnCurrentUrl.length > 0 && action === "" && (
             <button
               className="c-avatar__show-emails-button btn btn-primary btn-rounded"
               onClick={handleShowEmails}
@@ -42,23 +122,25 @@ const Avatar = ({
             </button>
           )}
         </div>
-        {state.showEmails && emails.length > 0 && action === "" && (
-          <ul className="c-avatar__message-emails-list">
-            {emails.map((email) => (
-              <li key={email}>
-                <button onClick={() => handleSelectEmail(email)}>
-                  {email}
-                </button>
-                <button
-                  className="btn-danger"
-                  onClick={() => handleRemoveEmail(email)}
-                >
-                  <i className="fas fa-minus-circle"></i>
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+        {state.showEmails &&
+          knownEmailsOnCurrentUrl.length > 0 &&
+          action === "" && (
+            <ul className="c-avatar__message-emails-list">
+              {knownEmailsOnCurrentUrl.map((email) => (
+                <li key={email}>
+                  <button onClick={() => handleSelectEmail(email)}>
+                    {email}
+                  </button>
+                  <button
+                    className="btn-danger"
+                    onClick={() => handleRemoveEmail(email)}
+                  >
+                    <i className="fas fa-minus-circle"></i>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
       </div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
