@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 // Components
 import PasswordGenerator from "../PasswordGenerator";
-import Justin from "../Justin";
+import Avatar from "../Avatar";
 
 // Actions
 import {
@@ -65,7 +65,7 @@ const Popup = () => {
       <header className="c-popup__header">
         <div className="c-popup__top">{currentUrl}</div>
         <div className="c-popup__avatar">
-          <Justin />
+          <Avatar />
         </div>
         <div className="c-popup__switch-mode">
           <label className="c-switch-mode">
